@@ -21,3 +21,17 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/home/{id}', 'HomeController@index')->name('cart');
+
+
+Route::group(['middleware' =>['auth','admin']], function () {
+    Route::get('/dashboard', 'ProductController@index')->name('product.dashboard');
+    Route::get('/dashboard/create', 'ProductController@create')->name('product.create');
+    Route::post('/dashboard/store', 'ProductController@store')->name('product.store');
+    Route::get('/dashboard/delete/{id}', 'ProductController@delete')->name('product.delete');
+    Route::get('/dashboard/edit/{id}', 'ProductController@edit')->name('product.edit');
+    Route::post('/dashboard/update', 'ProductController@update')->name('product.update');  
+
+
+    Route::get('user', 'UserController@index');
+});
