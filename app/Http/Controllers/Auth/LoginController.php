@@ -7,7 +7,8 @@ use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use PhpParser\Node\Expr\FuncCall;
 use Illuminate\Support\Facades\Auth;
-
+use Illuminate\Http\Request;
+use App\User;
 
 class LoginController extends Controller
 {
@@ -47,4 +48,33 @@ class LoginController extends Controller
     {
         $this->middleware('guest')->except('logout');
     }
+
+    
+    public function login(Request $r)
+    {
+        $user = User::where('email', $r->email)->first();
+        if($user){
+            if ($user->usertype == "admin"){
+                if(\Auth::guard('admin')->attempt($r->only('email','password'))){
+                    //Authentication passed...
+                    return redirect()
+                        ->intended(route('product.dashboard'))
+                        ->with('status','You are Logged in as Admin!');
+                }
+            }else{
+                if(\Auth::attempt($r->only('email','password'))){
+                    //Authentication passed...
+                    return redirect()
+                        ->intended(route('home'))
+                        ->with('status','You are Logged in as Admin!');
+                }
+            }
+        } else {
+            $this->loginFailed();
+        }
+       
+    
+    }
+
+    
 }

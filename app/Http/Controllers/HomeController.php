@@ -25,4 +25,8 @@ class HomeController extends Controller
          $products = Product::all();
           return view('user.product')->withTitle('E-COMMERCE STORE | SHOP')->with(['products'=>$products]);
      }
+    public function cart(){
+       
+         return view('user.cart');
+    }
 }

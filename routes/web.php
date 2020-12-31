@@ -21,10 +21,10 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
-Route::get('/home/{id}', 'HomeController@index')->name('cart');
+Route::get('/home/cart', 'HomeController@cart')->name('cart');
 
 
-Route::group(['middleware' =>['auth','admin']], function () {
+Route::group(['middleware' =>['auth:admin']], function () {
     Route::get('/dashboard', 'ProductController@index')->name('product.dashboard');
     Route::get('/dashboard/create', 'ProductController@create')->name('product.create');
     Route::post('/dashboard/store', 'ProductController@store')->name('product.store');
